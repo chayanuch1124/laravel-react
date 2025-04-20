@@ -10,6 +10,12 @@ export default function Test() {
             <Head title="Test" />
             <h1>Welcome to my app</h1>
             <MyButton />
+
+
+
+
+
+            
         </div>
     );
 }
