@@ -46,3 +46,28 @@ Route::get('/home-page', function () {
 Route::get('/bootstrap', function () {
     return Inertia::render('BootstrapContent');
 })->name('bootstrap');
+
+Route::get('/circle', function () {
+    return Inertia::render('Circle');
+})->name('circle'); 
+
+
+Route::get('/counter', function () {
+    return Inertia::render('Counter');
+})->name('counter');
+
+Route::get('/form-example', function () {
+    return Inertia::render('FormExample');
+})->name('form-example');
+
+Route::get('/list-manager', function () {
+    return Inertia::render('ListManager');
+})->name('list-manager');
+
+Route::get('/infinite-scroll', function () {
+    return Inertia::render('InfiniteScrollExample');
+})->name('infinite-scroll');
+
+Route::get('/emoji-review', function () {
+    return Inertia::render('EmojiReview');
+})->name('emoji-review');
