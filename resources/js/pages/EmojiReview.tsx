@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-
+declare global {
+    interface Window {
+        google: any;
+    }
+}
 const MangaReview = () => {
     const [votes, setVotes] = useState({
         Awesome: 32,
@@ -19,7 +23,7 @@ const MangaReview = () => {
     };
 
     const handleVote = (type: string) => {
-        setVotes((prev) => ({ ...prev, [type]: prev[type] + 1 }));
+        setVotes((prev: any) => ({ ...prev, [type]: prev[type] + 1 }));
         setVotedEmoji(type);
         setTimeout(() => setVotedEmoji(null), 400); // ลบ class หลัง animation
     };
@@ -35,7 +39,6 @@ const MangaReview = () => {
         };
 
         document.body.appendChild(script);
-
         
     }, []);
 
@@ -44,6 +47,26 @@ const MangaReview = () => {
             drawChart();
         }
     }, [votes]);
+
+    useEffect(() => {
+        let resizeTimer: NodeJS.Timeout;
+    
+        const handleResize = () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.google?.visualization?.LineChart) {
+                    drawChart();
+                }
+            }, 150); // หน่วงเวลา 200ms
+        };
+    
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            clearTimeout(resizeTimer);
+        };
+    }, []);
 
     const drawChart = () => {
         const data = window.google.visualization.arrayToDataTable([
@@ -58,8 +81,10 @@ const MangaReview = () => {
 
         const options = {
             title: '',
+            backgroundColor: 'transparent', // ส่วน plot พื้นหลังโปร่งใส
             curveType: 'function',
             legend: 'none',
+
             annotations: {
                 alwaysOutside: true,
                 textStyle: {
@@ -87,7 +112,7 @@ const MangaReview = () => {
     };
 
     return (
-        <div style={{ display: 'flex', padding: '20px', fontFamily: "'Opun', sans-serif" }}>
+        <div className="manga-container">
             {/* ซ้าย: รูป */}
             <div style={{ flex: 1, justifyContent: 'center', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                 <img
@@ -109,7 +134,7 @@ const MangaReview = () => {
                     }}
                     onClick={() => alert('ไปยังตอนแรก!')} // เปลี่ยนเป็นลิงก์จริงถ้ามี
                 >
-                    📖 อ่านตอนแรก
+                    📖 Read the first part
                 </button>
             </div>
 
@@ -117,7 +142,7 @@ const MangaReview = () => {
             <div style={{ flex: 2 }}>
                 <h1>Hold Her Tighter So She Wouldn’t Run Away</h1>
                 <p>
-                    <strong>แนว : </strong>
+                    <strong>Genres : </strong>
                     {['Comedy', 'Fantasy', 'Romance'].map((genre, index) => {
                         const borderColors = ['#ff7f50', '#87ceeb', '#da70d6'];
                         return (
@@ -149,7 +174,7 @@ const MangaReview = () => {
       background-color: rgba(0,0,0,0.1);
       color: #333;
     }
-  `}</style>
+                    `}</style>
                 </p>
 
                 <p>
@@ -172,10 +197,11 @@ const MangaReview = () => {
                         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                     }}
                 >
-                    <div style={{ display: 'flex', gap: '20px' }}>
+                    <div className="chart-flex">
                         {/* คอลัมน์: รายการโหวต */}
                         <div style={{ flex: 1 }}>
-                            <h4>ผลโหวต (รวม {totalVotes} โหวต)</h4>
+                            <h4>
+                            Vote results  {totalVotes} Votes</h4>
                             <ul style={{ lineHeight: '2em', listStyle: 'none', paddingLeft: 0 }}>
                                 {[
                                     { key: 'Awesome', emoji: '👍' },
@@ -200,7 +226,7 @@ const MangaReview = () => {
                                         >
                                             {emoji}
                                         </button>
-                                        {key}: {votes[key]}
+                                        {key}: {votes[key as keyof typeof votes]}
                                     </li>
                                 ))}
                             </ul>
@@ -212,21 +238,101 @@ const MangaReview = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+                {/* ตอนทั้งหมด */}
+<div style={{ width: '100%', marginTop: '40px' }}>
+    <h2>📚 Episodes</h2>
+    <div
+        style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+            gap: '10px',
+            marginTop: '10px',
+        }}
+    >
+        {Array.from({ length: 20 }, (_, i) => (
+            <button
+                key={i}
+                style={{
+                    padding: '10px',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    backgroundColor: '#fafafa',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s',
+                }}
+                onClick={() => alert(`คุณเลือกอ่านตอนที่ ${i + 1}`)}
+            >
+                ตอนที่ {i + 1}
+            </button>
+        ))}
+    </div>
+</div>
 
+            </div>
+            
             {/* เพิ่ม style สำหรับ bounce animation */}
             <style>{`
-                @keyframes bounce {
-                    0% { transform: translateY(0); }
-                    30% { transform: translateY(-10px); }
-                    50% { transform: translateY(0); }
-                    100% { transform: translateY(0); }
-                }
-                .bounce {
-                    animation: bounce 0.4s ease;
-                }
+    @keyframes bounce {
+        0% { transform: translateY(0); }
+        30% { transform: translateY(-10px); }
+        50% { transform: translateY(0); }
+        100% { transform: translateY(0); }
+    }
+    .bounce {
+        animation: bounce 0.4s ease;
+    }
+
+    .manga-container {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        padding: 20px;
+        font-family: 'Opun', sans-serif;
+        align-items: flex-start;
+    }
+
+    @media (max-width: 1200px) {
+        .manga-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .manga-container > div:first-child {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .manga-container > div:nth-child(2) {
+            width: 100%;
+            margin-top: 20px;
+        }
+       
+    }
+       .chart-flex {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+}
+
+@media (max-width: 1200px) {
+    .chart-flex {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    #chart_div {
+        margin-top: 20px;
+        width: 100% !important;
+        max-width: 500px;
+    }
+} 
             `}</style>
+
         </div>
+        
     );
 };
 
