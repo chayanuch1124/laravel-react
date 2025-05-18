@@ -20,7 +20,7 @@ export default function BootstrapLayout({ children } : any) {
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container">
                     <a className="navbar-brand" href="#">
-                        Navbar
+                        eiei
                     </a>
                     <button
                         className="navbar-toggler"
