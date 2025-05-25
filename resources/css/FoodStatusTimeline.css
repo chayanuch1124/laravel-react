@@ -1,0 +1,87 @@
+.food-timeline-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.food-timeline-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.timeline-wrapper {
+  width: 100%;
+}
+
+.timeline-line {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 60px;
+}
+
+.timeline-step-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #e5e7eb; /* gray-300 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #6b7280; /* gray-500 */
+  position: relative;
+  z-index: 2;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: default;
+}
+
+.timeline-step-circle.active {
+  background-color: #059669; /* green-600 */
+  color: white;
+}
+
+.timeline-step-line {
+  flex-grow: 1;
+  height: 6px;
+  background-color: #d1d5db; /* gray-300 */
+  margin: 0 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  position: relative;
+  top: 0;
+  z-index: 1;
+}
+
+.timeline-step-line.active {
+  background-color: #059669; /* green-600 */
+}
+
+.timeline-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.timeline-step-label {
+  width: 48px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+  user-select: none;
+  transition: color 0.3s, font-weight 0.3s;
+}
+
+.timeline-step-label.active-label {
+  font-weight: 600;
+  color: #059669;
+}
+
+.food-timeline-buttons {
+  display: flex;
+  gap: 12px;
+}

@@ -102,3 +102,7 @@ Route::get('/product/{id}/edit', function ($id) {
 Route::get('/KoreanMenu', function () {
     return Inertia::render('KoreanMenu');
 })->name('KoreanMenu');
+
+Route::get('/CookingProcess', function () {
+    return Inertia::render('CookingProcess');
+})->name('CookingProcess');
