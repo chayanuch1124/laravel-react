@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\KoreanDishController;
 use App\Http\Controllers\Api\ProductController;
-use App\Models\KoreanDish;
-use App\Models\Product;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +25,13 @@ Route::apiResource('/product', ProductController::class);
 // });
 
 Route::apiResource('/KoreanDish',KoreanDishController::class);
+
+Route::prefix('customers')->group(function () {
+    // Route::get('/', [CustomerController::class, 'index']);             // /api/customers?search=xxx
+    Route::get('/export', [CustomerController::class, 'export']);      // /api/customers/export?format=csv|xlsx
+});
+Route::apiResource('customers',CustomerController::class);
+
 
 
 

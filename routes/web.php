@@ -107,3 +107,10 @@ Route::get('/KoreanMenu', function () {
 Route::get('/CookingProcess', function () {
     return Inertia::render('CookingProcess');
 })->name('CookingProcess');
+
+Route::get('/Customer', function () {
+    return Inertia::render('Customer');
+})->name('Customer');
+
+
+
